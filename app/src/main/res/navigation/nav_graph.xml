@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <!-- Main Screen -->
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.allano.alquran.ui.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <!-- Action to go to the Surah List -->
+        <action
+            android:id="@+id/action_mainFragment_to_surahListFragment"
+            app:destination="@id/surahListFragment" />
+        <!-- Action to go to the Favorites List -->
+        <action
+            android:id="@+id/action_mainFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+
+        <!-- Action to go to the Dzikr Counter -->
+        <action
+            android:id="@+id/action_mainFragment_to_dzikrCounterFragment"
+            app:destination="@id/dzikrCounterFragment" />
+    </fragment>
+
+    <!-- Surah List Screen -->
+    <fragment
+        android:id="@+id/surahListFragment"
+        android:name="com.allano.alquran.ui.SurahListFragment"
+        android:label="SurahListFragment"
+        tools:layout="@layout/fragment_surah_list">
+        <!-- Action to go from the Surah List to the Detail Screen -->
+        <action
+            android:id="@+id/action_surahListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <!-- Favorite List Screen -->
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.allano.alquran.ui.FavoriteFragment"
+        android:label="FavoriteFragment"
+        tools:layout="@layout/fragment_favorite">
+        <!-- Action to go from the Favorites List to the Detail Screen -->
+        <action
+            android:id="@+id/action_favoriteFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <!-- Detail Screen -->
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.allano.alquran.ui.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <!-- Argument to receive the surah number -->
+        <argument
+            android:name="surahNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- Dzikr Counter Screen -->
+    <fragment
+        android:id="@+id/dzikrCounterFragment"
+        android:name="com.allano.alquran.ui.DzikrCounterFragment"
+        android:label="DzikrCounterFragment"
+        tools:layout="@layout/fragment_dzikr_counter" />
+
+</navigation>

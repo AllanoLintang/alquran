@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">alquran</string>
+    <string name="default_edit_text">This is a positive movie. The plot is good, the actors are great, and the director is a genius.</string>
+    <string name="result_display_text">%1$s (%2$.2f)</string>
 </resources>

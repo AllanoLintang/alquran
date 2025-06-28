@@ -1,3 +1,5 @@
+import java.net.URL
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,40 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization") version "2.1.21"
+}
+
+task("downloadTFLiteModels") {
+    doLast {
+        val assetDir = file("src/main/assets")
+        if (!assetDir.exists()) {
+            assetDir.mkdirs()
+        }
+
+        val models = mapOf(
+            "mobilebert.tflite" to "https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/text_classification/android/mobilebert.tflite",
+            "wordvec.tflite" to "https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/text_classification/android/text_classification_v2.tflite"
+        )
+
+        models.forEach { (fileName, url) ->
+            val destination = file("${assetDir.path}/$fileName")
+            if (!destination.exists()) {
+                println("Downloading $fileName...")
+                URL(url).openStream().use { input ->
+                    destination.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                println("Download complete for $fileName.")
+            } else {
+                println("$fileName already exists. Skipping download.")
+            }
+        }
+    }
+}
+
+// Menjalankan tugas unduh sebelum build
+tasks.named("preBuild").configure {
+    dependsOn("downloadTFLiteModels")
 }
 
 android {
@@ -39,6 +75,9 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+    aaptOptions {
+        noCompress("tflite")
     }
 }
 
@@ -75,6 +114,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 
     implementation("io.coil-kt:coil:2.6.0")
+    implementation("org.tensorflow:tensorflow-lite-task-text:0.4.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

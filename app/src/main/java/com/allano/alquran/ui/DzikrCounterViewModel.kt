@@ -13,6 +13,9 @@ class DzikrCounterViewModel : ViewModel() {
 
     fun increment() {
         _count.value++
+        if(_count.value == 33){
+            reset()
+        }
     }
 
     fun reset() {

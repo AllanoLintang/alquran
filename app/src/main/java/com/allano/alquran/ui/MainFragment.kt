@@ -40,6 +40,11 @@ class MainFragment : Fragment() {
         binding.buttonDzikrCounter.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_dzikrCounterFragment)
         }
+
+        // Add the click listener for the "Text Classifier" button
+        binding.buttonTextClassifier.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_textClassifierFragment)
+        }
     }
 
     override fun onDestroyView() {

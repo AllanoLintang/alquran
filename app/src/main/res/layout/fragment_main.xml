@@ -43,8 +43,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Tasbih"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_text_classifier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_favorites" />
+
+    <Button
+        android:id="@+id/button_text_classifier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Text Classifier"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_dzikr_counter" />
 </androidx.constraintlayout.widget.ConstraintLayout>

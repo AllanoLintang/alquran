@@ -24,6 +24,11 @@
         <action
             android:id="@+id/action_mainFragment_to_dzikrCounterFragment"
             app:destination="@id/dzikrCounterFragment" />
+
+        <!-- Action to go to the Text Classifier -->
+        <action
+            android:id="@+id/action_mainFragment_to_textClassifierFragment"
+            app:destination="@id/textClassifierFragment" />
     </fragment>
 
     <!-- Surah List Screen -->
@@ -68,5 +73,11 @@
         android:name="com.allano.alquran.ui.DzikrCounterFragment"
         android:label="DzikrCounterFragment"
         tools:layout="@layout/fragment_dzikr_counter" />
+
+    <fragment
+        android:id="@+id/textClassifierFragment"
+        android:name="com.allano.alquran.ui.TextClassifierFragment"
+        android:label="TextClassifierFragment"
+        tools:layout="@layout/fragment_text_classifier" />
 
 </navigation>

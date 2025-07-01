@@ -17,7 +17,6 @@ class DzikrCounterFragment : Fragment() {
     private var _binding: FragmentDzikrCounterBinding? = null
     private val binding get() = _binding!!
 
-    // Initialize the ViewModel
     private val viewModel: DzikrCounterViewModel by viewModels()
 
     override fun onCreateView(
@@ -31,7 +30,6 @@ class DzikrCounterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up the click listeners
         binding.btnIncrement.setOnClickListener {
             viewModel.increment()
         }
@@ -40,7 +38,6 @@ class DzikrCounterFragment : Fragment() {
             viewModel.reset()
         }
 
-        // Observe the count from the ViewModel and update the TextView
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.count.collect { currentCount ->

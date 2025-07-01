@@ -20,9 +20,6 @@ class SurahRepository(private val surahDao: SurahDao, private val ayahDao: AyahD
     fun getFavoriteSurahsStream(): Flow<List<SurahEntity>> = surahDao.getFavoriteSurahs()
 
     suspend fun refreshSurahs() {
-        // --- CRITICAL FIX ---
-        // This entire block is now wrapped in withContext(Dispatchers.IO) to ensure
-        // that the .first() call and all other DB/network operations happen on a background thread.
         withContext(Dispatchers.IO) {
             try {
                 val favoriteSurahNumbers = surahDao.getAllSurahs().first().filter { it.isFavorite }.map { it.number }.toSet()
@@ -65,7 +62,6 @@ class SurahRepository(private val surahDao: SurahDao, private val ayahDao: AyahD
         )
     }
 
-    // --- Unchanged Functions Below ---
     fun getAyahStream(surahNumber: Int): Flow<List<AyahEntity>> {
         return ayahDao.getAyahsBySurahNumber(surahNumber)
     }
@@ -96,19 +92,14 @@ class SurahRepository(private val surahDao: SurahDao, private val ayahDao: AyahD
         }
     }
     suspend fun getSurahDetailFromApi(surahNumber: Int): List<MergedAyah>? {
-        Log.d("RepoDetail", "Memulai pengambilan detail untuk surah: $surahNumber")
         return try {
             val response = ApiClient.apiService.getSurahDetailWithMultipleEditions(surahNumber)
-            Log.d("RepoDetail", "Panggilan API berhasil (isSuccessful): ${response.isSuccessful}")
 
             if (response.isSuccessful) {
                 val responseData = response.body()?.data
-                Log.d("RepoDetail", "Jumlah edisi yang diterima dari API: ${responseData?.size}")
 
                 val arabicEdition = responseData?.getOrNull(0)
                 val englishEdition = responseData?.getOrNull(1)
-                Log.d("RepoDetail", "Edisi Arab ditemukan: ${arabicEdition != null}")
-                Log.d("RepoDetail", "Edisi Inggris ditemukan: ${englishEdition != null}")
 
                 if (arabicEdition != null && englishEdition != null) {
                     val mergedList = arabicEdition.ayahs.zip(englishEdition.ayahs).map { (arabicAyah, englishAyah) ->
@@ -118,18 +109,14 @@ class SurahRepository(private val surahDao: SurahDao, private val ayahDao: AyahD
                             englishText = englishAyah.text
                         )
                     }
-                    Log.d("RepoDetail", "Berhasil menggabungkan ${mergedList.size} ayat.")
                     return mergedList
                 } else {
-                    Log.e("RepoDetail", "Salah satu atau kedua edisi (Arab/Inggris) tidak ditemukan dalam respons API.")
                     return null
                 }
             } else {
-                Log.e("RepoDetail", "Panggilan API tidak sukses. Kode: ${response.code()}")
                 return null
             }
         } catch (e: Exception) {
-            Log.e("RepoDetail", "Terjadi EXCEPTION saat mengambil detail: ", e)
             return null
         }
     }

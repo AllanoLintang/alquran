@@ -44,11 +44,6 @@ class SurahViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // --- REMOVED ---
-    // The old, incorrect getSurahs() function has been removed.
-
-    // --- NEW ---
-    // Function to handle the favorite button click
     fun toggleFavorite(surah: SurahEntity) {
         viewModelScope.launch {
             repository.setFavorite(surah, !surah.isFavorite)
@@ -59,18 +54,6 @@ class SurahViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.refreshSurahs()
         }
-    }
-
-    suspend fun getSurahDetailFromApi(surahNumber: Int): List<MergedAyah>? {
-        return repository.getSurahDetailFromApi(surahNumber)
-    }
-
-    fun onSurahClicked(surah: SurahEntity) {
-        _navigateToDetail.value = surah
-    }
-
-    fun onDetailNavigated() {
-        _navigateToDetail.value = null
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {
